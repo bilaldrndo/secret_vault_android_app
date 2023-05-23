@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SecretVault</string>
+    <string name="add_button">Add Button</string>
+    <string name="notes">Notes</string>
+    <string name="search_notes">Search Notes</string>
+    <string name="sort_notes">Sort Notes</string>
+    <string name="delete_all_notes">Delete All Notes</string>
+    <string name="search">Search</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="close_icon">Close Icon</string>
+    <string name="sad_face_icon">Sad Face Icon</string>
+    <string name="no_notes_found">No Notes Found</string>
+    <string name="new_note">New Note</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="check">Check</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+
+    <string name="fields_empty">Fields Empty</string>
+</resources>
