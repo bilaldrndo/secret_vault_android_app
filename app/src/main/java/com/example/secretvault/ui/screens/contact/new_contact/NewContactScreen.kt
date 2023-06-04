@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.new_note
+package com.example.secretvault.ui.screens.contact.new_contact
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,10 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.secretvault.data.models.Contact
 import com.example.secretvault.data.models.Note
 import com.example.secretvault.data.models.Priority
 import com.example.secretvault.ui.components.NewItemAppBar
 import com.example.secretvault.ui.components.displayToast
+import com.example.secretvault.ui.viewmodels.ContactsViewModel
 import com.example.secretvault.ui.viewmodels.NotesViewModel
 import com.example.secretvault.util.Action
 import com.example.secretvault.util.TypeOfScreen
@@ -23,28 +25,27 @@ import com.example.secretvault.util.TypeOfScreen
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewNoteScreen(
-    selectedNote: Note?,
-    notesViewModel: NotesViewModel,
-    navigateToNotesScreen: (Action) -> Unit,
+fun NewContactScreen(
+    selectedContact: Contact?,
+    contactsViewModel: ContactsViewModel,
+    navigateToContactsScreen: (Action) -> Unit,
 ) {
-    val title: String by notesViewModel.title
-    val description: String by notesViewModel.description
-    val priority: Priority by notesViewModel.priority
+    val nameAndSurname: String by contactsViewModel.nameAndSurname
+    val number: String by contactsViewModel.number
 
     val context = LocalContext.current
 
     Scaffold(
         topBar = {
             NewItemAppBar(
-                topTitle = selectedNote?.title ?: "",
-                typeOfScreen = TypeOfScreen.NoteScreen,
+                topTitle = selectedContact?.nameAndSurname ?: "",
+                typeOfScreen = TypeOfScreen.ContactsScreen,
                 navigateToScreenBefore = {
                    if (it == Action.NO_ACTION) {
-                       navigateToNotesScreen(it)
+                       navigateToContactsScreen(it)
                    } else {
-                        if (notesViewModel.validateFields()) {
-                            navigateToNotesScreen(it)
+                        if (contactsViewModel.validateFields()) {
+                            navigateToContactsScreen(it)
                         } else {
                             displayToast(context)
                         }
@@ -54,21 +55,18 @@ fun NewNoteScreen(
         },
         content = {
             Box(modifier = Modifier.padding(0.dp, it.calculateTopPadding(), 0.dp, 0.dp)) {
-                NewNoteContent(
-                    title = title,
-                    onTitleChange = {
-                        notesViewModel.title.value = it
+                NewContactContent(
+                    nameAndSurname = nameAndSurname,
+                    onNameAndSurnameChange = { content ->
+                        contactsViewModel.nameAndSurname.value = content
                     },
-                    description = description,
-                    onDescriptionChange = {
-                        notesViewModel.description.value = it
+                    number = number,
+                    onNumberChange = { content ->
+                        contactsViewModel.number.value = content
                     },
-                    priority = priority,
-                    onPrioritySelected = {
-                        notesViewModel.priority.value = it
-                    }
                 )
             }
         }
     )
 }
+

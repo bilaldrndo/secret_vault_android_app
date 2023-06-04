@@ -5,18 +5,21 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.secretvault.ui.screens.contact.contacts.ContactScreen
 import com.example.secretvault.ui.screens.note.notes.NotesScreen
+import com.example.secretvault.ui.viewmodels.ContactsViewModel
 import com.example.secretvault.ui.viewmodels.NotesViewModel
+import com.example.secretvault.util.Constants.CONTACTS_SCREEN
 import com.example.secretvault.util.Constants.ITEM_ARGUMENT_KEY
 import com.example.secretvault.util.Constants.NOTES_SCREEN
 import com.example.secretvault.util.toAction
 
-fun NavGraphBuilder.noteComposable(
-    navigateToNewNoteScreen: (noteId: Int) -> Unit,
-    notesViewModel: NotesViewModel,
+fun NavGraphBuilder.contactComposable(
+    navigateToNewContactScreen: (contactId: Int) -> Unit,
+    contactsViewModel: ContactsViewModel,
 ) {
     composable(
-        route = NOTES_SCREEN,
+        route = CONTACTS_SCREEN,
         arguments = listOf(navArgument(ITEM_ARGUMENT_KEY) {
             type = NavType.StringType
         })
@@ -24,12 +27,12 @@ fun NavGraphBuilder.noteComposable(
         val action = navBackStackEntry.arguments?.getString(ITEM_ARGUMENT_KEY).toAction()
 
         LaunchedEffect(key1 = action) {
-            notesViewModel.action.value = action
+            contactsViewModel.action.value = action
         }
 
-        NotesScreen(
-            navigateToNewNoteScreen = navigateToNewNoteScreen,
-            notesViewModel = notesViewModel,
+        ContactScreen(
+            navigateToNewContactScreen = navigateToNewContactScreen,
+            contactsViewModel = contactsViewModel,
         )
     }
 }

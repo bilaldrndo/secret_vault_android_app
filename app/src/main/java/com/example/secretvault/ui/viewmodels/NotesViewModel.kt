@@ -164,6 +164,12 @@ class NotesViewModel @Inject constructor(
         }
     }
 
+    private fun deleteAllNotes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllNotes()
+        }
+    }
+
     fun updateNoteFields(selectedNote: Note?) {
         if (selectedNote != null) {
             id.value = selectedNote.id
@@ -175,12 +181,6 @@ class NotesViewModel @Inject constructor(
             title.value = ""
             description.value = ""
             priority.value = Priority.LOW
-        }
-    }
-
-    fun deleteAllNotes() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllNotes()
         }
     }
 

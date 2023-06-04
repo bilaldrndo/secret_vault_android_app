@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.new_note
+package com.example.secretvault.ui.screens.contact.new_contact
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,15 +22,13 @@ import com.example.secretvault.ui.components.PriorityDropdown
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewNoteContent(
-    title: String,
-    onTitleChange: (String) -> Unit,
-    description: String,
-    onDescriptionChange: (String) -> Unit,
-    priority: Priority,
-    onPrioritySelected: (Priority) -> Unit,
+fun NewContactContent(
+    nameAndSurname: String,
+    onNameAndSurnameChange: (String) -> Unit,
+    number: String,
+    onNumberChange: (String) -> Unit,
 ) {
-    val maxChar = 20
+    val maxChar = 30
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,34 +36,29 @@ fun NewNoteContent(
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = title,
+            value = nameAndSurname,
             onValueChange =  {
                 if (it.length < maxChar) {
-                    onTitleChange(it)
+                    onNameAndSurnameChange(it)
                 }
             },
-            label = { Text(text = stringResource(id = R.string.title))},
+            label = { Text(text = stringResource(id = R.string.name_and_surname))},
             textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
             singleLine = true,
             maxLines = 1,
 
         )
-        Box(modifier = Modifier.height(13.dp))
-        PriorityDropdown(
-            priority = priority,
-            onPrioritySelected = onPrioritySelected
-        )
         Box(modifier = Modifier.height(5.dp))
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            value = description,
+            modifier = Modifier.fillMaxWidth(),
+            value = number,
             onValueChange =  {
-                onDescriptionChange(it)
+                onNumberChange(it)
             },
-            label = { Text(text = stringResource(id = R.string.description))},
+            label = { Text(text = stringResource(id = R.string.number))},
             textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+            singleLine = true,
+            maxLines = 1,
         )
     }
 }

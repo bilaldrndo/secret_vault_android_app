@@ -1,4 +1,4 @@
-package com.example.secretvault
+package com.example.secretvault.util
 
 sealed class CalculatorOperation ( val symbol : String) {
     object Add : CalculatorOperation("+")

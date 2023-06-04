@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.new_note
+package com.example.secretvault.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,44 +10,50 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.secretvault.R
-import com.example.secretvault.data.models.Note
 import com.example.secretvault.ui.theme.Purple40
 import com.example.secretvault.util.Action
+import com.example.secretvault.util.TypeOfScreen
 
 @Composable
-fun NewNoteAppBar(
-    selectedNote: Note?,
-    navigateToNotesScreen: (Action) -> Unit,
+fun NewItemAppBar(
+    topTitle: String = "",
+    typeOfScreen: TypeOfScreen,
+    navigateToScreenBefore: (Action) -> Unit,
 ) {
-    if (selectedNote == null) {
-        NewNoteAppBar(navigateToNotesScreen = navigateToNotesScreen)
+    if (topTitle == "") {
+        NewItemAppBar(navigateToScreenBefore = navigateToScreenBefore, typeOfScreen = typeOfScreen)
     } else {
-        ExistingNoteAppBar(selectedNote = selectedNote, navigateToNotesScreen = navigateToNotesScreen)
+        ExistingItemAppBar(topTitle = topTitle, navigateToScreenBefore = navigateToScreenBefore)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewNoteAppBar(
-    navigateToNotesScreen: (Action) -> Unit,
+fun NewItemAppBar(
+    navigateToScreenBefore: (Action) -> Unit,
+    typeOfScreen: TypeOfScreen,
 ) {
     TopAppBar(
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40),
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
         navigationIcon = {
-            BackAction(onBackClicked = navigateToNotesScreen)
+            BackAction(onBackClicked = navigateToScreenBefore)
         },
         title = {
-            Text(stringResource(id = R.string.new_note))
+            if (typeOfScreen == TypeOfScreen.NoteScreen) {
+                Text(text  = stringResource(id = R.string.new_note))
+            } else {
+                Text(text  = stringResource(id = R.string.new_contact))
+
+            }
         },
         actions = {
-            AddAction(onAddClicked = navigateToNotesScreen)
+            AddAction(onAddClicked = navigateToScreenBefore)
         }
     )
 }
@@ -80,24 +86,25 @@ fun BackAction(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExistingNoteAppBar(
-    selectedNote: Note,
-    navigateToNotesScreen: (Action) -> Unit,
+fun ExistingItemAppBar(
+    topTitle: String,
+    navigateToScreenBefore: (Action) -> Unit,
 ) {
     TopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
         navigationIcon = {
-            CloseAction(onCloseClicked = navigateToNotesScreen)
+            CloseAction(onCloseClicked = navigateToScreenBefore)
         },
         title = {
             Text(
-                selectedNote.title,
+                topTitle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         },
         actions = {
-            DeleteAction(onDeleteClicked = navigateToNotesScreen)
-            UpdateAction(onUpdateClicked = navigateToNotesScreen)
+            DeleteAction(onDeleteClicked = navigateToScreenBefore)
+            UpdateAction(onUpdateClicked = navigateToScreenBefore)
         }
     )
 }

@@ -4,21 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.secretvault.ui.theme.ExampleTheme
-import com.example.secretvault.ui.theme.shade_of_cyan_blue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.secretvault.ui.theme.SecretVaultTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -26,20 +16,26 @@ import com.example.secretvault.navigation.SetupNavigation
 import com.example.secretvault.ui.viewmodels.NotesViewModel
 import com.example.secretvault.ui.viewmodels.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.secretvault.ui.screens.splash.SplashScreen
+import com.example.secretvault.ui.viewmodels.CalculatorViewModel
+import com.example.secretvault.ui.viewmodels.ContactsViewModel
 import com.example.secretvault.ui.viewmodels.PinViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import kotlinx.coroutines.delay
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
-    private val notesViewModel: NotesViewModel by viewModels()
+    private val splashViewModel: SplashViewModel by viewModels()
+    private val pinViewModel: PinViewModel by viewModels()
 
-    @Inject
-    lateinit var splashViewModel: SplashViewModel
+    private val notesViewModel: NotesViewModel by viewModels()
+    private val contactsViewModel: ContactsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +45,12 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            ExampleTheme {
+            SecretVaultTheme {
                 val startScreen by splashViewModel.startDestination
                 val pin by splashViewModel.pin
 
-                val viewModel = viewModel<CalculatorViewModel>()
-                val state = viewModel.state
+                val calcViewModel = viewModel<CalculatorViewModel>()
+                val calcState = calcViewModel.state
 
                 navController = rememberNavController()
 
@@ -63,8 +59,11 @@ class MainActivity : ComponentActivity() {
                     pin = pin,
                     navController = navController,
                     notesViewModel = notesViewModel,
-                    calculatorState = state,
-                    calculatorOnAction = viewModel::onAction,
+                    contactsViewModel = contactsViewModel,
+                    pinViewModel = pinViewModel,
+                    splashViewModel = splashViewModel,
+                    calculatorState = calcState,
+                    calculatorOnAction = calcViewModel::onAction,
                 )
             }
         }

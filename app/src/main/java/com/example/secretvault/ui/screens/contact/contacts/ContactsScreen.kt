@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.notes
+package com.example.secretvault.ui.screens.contact.contacts
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -21,48 +21,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.secretvault.R
+import com.example.secretvault.ui.viewmodels.ContactsViewModel
 import com.example.secretvault.util.SearchAppBarState
 import com.example.secretvault.ui.viewmodels.NotesViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotesScreen(
-    navigateToNewNoteScreen: (noteId: Int) -> Unit,
-    notesViewModel: NotesViewModel
+fun ContactScreen(
+    navigateToNewContactScreen: (contactId: Int) -> Unit,
+    contactsViewModel: ContactsViewModel,
 ) {
     //Launches the function only once in the beginning to retrieve all data from the DB
     LaunchedEffect(key1 = true) {
         Log.d("List Screen 2", "Launch effect triggered")
-        notesViewModel.getAllNotes()
+        contactsViewModel.getAllContacts()
     }
 
-    val action by notesViewModel.action
+    val action by contactsViewModel.action
 
     //Collect as a state updates the items in real time -> The flow is activated
-    val allNotes by notesViewModel.allNotes.collectAsState()
-    val searchedNotes by notesViewModel.searchedNotes.collectAsState()
+    val allContacts by contactsViewModel.allContacts.collectAsState()
+    val searchedContacts by contactsViewModel.searchedContacts.collectAsState()
 
-    val searchAppBarState: SearchAppBarState by notesViewModel.searchAppBarState
-    val searchTextState: String by notesViewModel.searchTextState
+    val searchAppBarState: SearchAppBarState by contactsViewModel.searchAppBarState
+    val searchTextState: String by contactsViewModel.searchTextState
 
-    notesViewModel.handleDatabaseAction(action = action)
+    contactsViewModel.handleDatabaseAction(action = action)
 
     Scaffold(
         topBar = {
-            NotesAppBar(
-                notesViewModel = notesViewModel,
+            ContactsAppBar(
+                contactsViewModel = contactsViewModel,
                 searchAppBarState = searchAppBarState,
                 searchTextState = searchTextState,
             )
         },
         content = {
             Box(modifier = Modifier.padding(0.dp, it.calculateTopPadding(), 0.dp, 0.dp)) {
-                NotesContent(
-                    allNotes = allNotes,
-                    searchedNotes = searchedNotes,
+                ContactsContent(
+                    allContacts = allContacts,
+                    searchedContacts = searchedContacts,
                     searchAppBarState = searchAppBarState,
-                    navigateToNewNoteScreen = navigateToNewNoteScreen
+                    navigateToNewContactScreen = navigateToNewContactScreen
                 )
             }
         },
@@ -70,30 +71,9 @@ fun NotesScreen(
             ExtendedFloatingActionButton(
                 modifier = Modifier.offset(x = 0.dp, y = -55.dp),
                 icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                text = { Text("New Note") },
-                onClick = { navigateToNewNoteScreen(-1) },
+                text = { Text(stringResource(id = R.string.new_contact)) },
+                onClick = { navigateToNewContactScreen(-1) },
             )
         },
-
-//        floatingActionButton = {
-//            ListFab(onFabClicked = navigateToNewNoteScreen)
-//        }
     )
-}
-
-@Composable
-fun ListFab(
-    onFabClicked: (taskId: Int) -> Unit
-) {
-    FloatingActionButton(
-        onClick = {
-            onFabClicked(-1)
-        },
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(id = R.string.add_button),
-//            tint = Color.White,
-        )
-    }
 }

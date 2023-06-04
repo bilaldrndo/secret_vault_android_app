@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,15 +20,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.secretvault.R
 import com.example.secretvault.data.models.Note
+import com.example.secretvault.ui.components.EmptyContent
 import com.example.secretvault.util.RequestState
 import com.example.secretvault.util.SearchAppBarState
 
@@ -62,7 +65,9 @@ fun HandleNotesContent(
     navigateToNewNoteScreen: (noteId: Int) -> Unit
 ) {
     if (notes.isEmpty()) {
-        EmptyContent()
+        EmptyContent(
+            title = stringResource(id = R.string.no_notes_found)
+        )
     } else {
         DisplayNotes(
             notes = notes,
@@ -76,8 +81,12 @@ fun DisplayNotes(
     notes: List<Note>,
     navigateToNewNoteScreen: (taskId: Int) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn() {
+    Box(modifier = Modifier
+        .fillMaxSize()
+    ) {
+        LazyColumn(
+            contentPadding = PaddingValues(0.dp, 12.dp, 0.dp, 0.dp)
+        ) {
             items(
                 items = notes,
                 key = { note ->
@@ -108,31 +117,44 @@ fun NoteItem(
     ) {
         Column(
             modifier = Modifier
-                .padding(all = 12.dp)
                 .fillMaxWidth()
+                .padding(0.dp, 0.dp, 0.dp, 12.dp)
         ) {
-            Row {
-                Text(text = note.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-//                    color = Color.Red
-                )
-                // It is important to add this .weight(1f) in order for the expansion to work
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f))
-                Canvas(modifier = Modifier.size(16.dp)) {
-                    drawCircle(color = note.priority.color)
+            Column (
+                modifier = Modifier.padding(12.dp, 0.dp, 12.dp, 0.dp)
+                    ) {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = note.title,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                    )
+                    // It is important to add this .weight(1f) in order for the expansion to work
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
+                    Canvas(modifier = Modifier.size(16.dp)) {
+                        drawCircle(color = note.priority.color)
+                    }
                 }
+                Box(modifier = Modifier.height(5.dp))
+                Text(
+                    text = note.description,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Light,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
-            Text(
-                text = note.description,
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Box(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+            Divider()
         }
     }
 }

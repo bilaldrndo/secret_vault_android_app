@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SecretVault</string>
+    <string name="app_name">Calculator</string>
     <string name="add_button">Add Button</string>
     <string name="notes">Notes</string>
     <string name="search_notes">Search Notes</string>
@@ -18,6 +18,19 @@
     <string name="check">Check</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+
+    <string name="contacts">Contacts</string>
+    <string name="sort_contacts">Sort Contacts</string>
+    <string name="no_contacts_found">No Contacts Found</string>
+    <string name="name_and_surname">Name and Surname</string>
+    <string name="number">Number</string>
+    <string name="delete_all_contacts">Delete All Contacts</string>
+    <string name="new_contact">New Contact</string>
+
+    <string name="please_enter_pin">"Please Enter Your 4 digit Pin that You are going to use and make sure to remember it:"</string>
+    <string name="enter_pin">Enter Pin</string>
+    <string name="confirm_pin">Confirm Pin</string>
+    <string name="continue_btn">Continue</string>
 
     <string name="fields_empty">Fields Empty</string>
 </resources>

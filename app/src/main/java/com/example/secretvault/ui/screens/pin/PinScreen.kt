@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,28 +34,26 @@ import androidx.navigation.NavController
 import com.example.secretvault.ui.viewmodels.PinViewModel
 import com.example.secretvault.util.Constants.CALCULATOR_SCREEN
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.secretvault.R
 
 @Composable
 fun PinScreen(
-    pinViewModel: PinViewModel = hiltViewModel(),
+    pinViewModel: PinViewModel,
     navController: NavController,
 ) {
-
     var firstFieldTextContent: String by remember { mutableStateOf("") }
     var secondFieldTextContent: String by remember { mutableStateOf("") }
-
-    Box(
+    Surface(
         modifier = Modifier.fillMaxSize(),
-//        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-//            horizontalAlignment = HorizontalAlignment.CenterHorizontally
         ) {
             Box(modifier = Modifier.height(70.dp))
-            Text(text = "Please Enter Your 4 digit Pin that You are going to use and make sure to remember it:",
+            Text(
+                text = stringResource(id = R.string.please_enter_pin),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
             )
@@ -66,7 +65,7 @@ fun PinScreen(
                         firstFieldTextContent = it
                     }
                 },
-                label = "Enter PIN"
+                label = stringResource(id = R.string.enter_pin)
             )
             Box(modifier = Modifier.height(5.dp))
             PinField(
@@ -75,9 +74,9 @@ fun PinScreen(
                     if (it.length <= 4) {
                         secondFieldTextContent = it
                     }                },
-                label = "Confirm PIN"
+                label = stringResource(id = R.string.confirm_pin)
             )
-            Box(modifier = Modifier.height(5.dp))
+            Box(modifier = Modifier.height(10.dp))
             Button(
                 modifier = Modifier.align(Alignment.End),
                 shape = CutCornerShape(10),
@@ -92,7 +91,7 @@ fun PinScreen(
                 },
 
             ) {
-                Text(text = "Continue")
+                Text(text = stringResource(id = R.string.continue_btn))
             }
         }
     }
@@ -110,7 +109,7 @@ fun PinField(
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = label)},
-        textStyle = MaterialTheme.typography.bodyMedium,
+        textStyle = MaterialTheme.typography.bodyLarge,
         singleLine = true,
         maxLines = 1,
         keyboardOptions = KeyboardOptions(

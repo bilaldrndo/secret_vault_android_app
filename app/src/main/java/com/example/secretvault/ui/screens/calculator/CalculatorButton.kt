@@ -1,4 +1,4 @@
-package com.example.secretvault
+package com.example.secretvault.ui.screens.calculator
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

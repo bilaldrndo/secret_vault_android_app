@@ -1,4 +1,4 @@
-package com.example.secretvault
+package com.example.secretvault.util
 
 sealed class CalculatorActions {
     data class Number (val number: Int) : CalculatorActions()

@@ -1,9 +1,14 @@
-package com.example.secretvault
+package com.example.secretvault.ui.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.secretvault.util.CalculatorActions
+import com.example.secretvault.util.CalculatorOperation
+import com.example.secretvault.util.CalculatorState
+
+// TODO: Turn into hilt 
 
 class CalculatorViewModel : ViewModel() {
 

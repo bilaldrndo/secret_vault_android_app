@@ -24,7 +24,7 @@ fun PriorityItem(priority: Priority) {
         }
         Box(modifier = Modifier.width(5.dp))
         Text(
-            text = "SORT - ${priority.name}",
+            text = "${priority.name}",
             color = MaterialTheme.colorScheme.onSurface,
         )
     }

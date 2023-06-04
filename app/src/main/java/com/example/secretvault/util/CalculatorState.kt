@@ -1,4 +1,6 @@
-package com.example.secretvault
+package com.example.secretvault.util
+
+import com.example.secretvault.util.CalculatorOperation
 
 data class CalculatorState(
     val number1 : String = "",

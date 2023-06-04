@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.notes
+package com.example.secretvault.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,13 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.secretvault.R
 
 @Composable
-fun EmptyContent() {
+fun EmptyContent(
+    title: String,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -30,7 +31,7 @@ fun EmptyContent() {
             contentDescription = stringResource(id = R.string.sad_face_icon)
         )
         Text(
-            text = stringResource(id = R.string.no_notes_found),
+            text = title,
             style = MaterialTheme.typography.bodyLarge,
         )
     }
@@ -39,5 +40,7 @@ fun EmptyContent() {
 @Preview(showBackground = true)
 @Composable
 fun EmptyContentPreview() {
-    EmptyContent()
+    EmptyContent(
+        title = stringResource(id = R.string.no_notes_found)
+    )
 }

@@ -1,4 +1,4 @@
-package com.example.secretvault.ui.screens.note.notes
+package com.example.secretvault.ui.screens.contact.contacts
 
 import android.util.Log
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,11 +14,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,39 +34,38 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.secretvault.R
-import com.example.secretvault.data.models.Priority
-import com.example.secretvault.ui.components.PriorityItem
+import com.example.secretvault.data.models.Alphabet
 import com.example.secretvault.ui.components.SearchAppBar
 import com.example.secretvault.ui.theme.Purple40
-import com.example.secretvault.ui.viewmodels.NotesViewModel
+import com.example.secretvault.ui.viewmodels.ContactsViewModel
 import com.example.secretvault.util.Action
 import com.example.secretvault.util.SearchAppBarState
 
 
 @Composable
-fun NotesAppBar(
-    notesViewModel: NotesViewModel,
+fun ContactsAppBar(
+    contactsViewModel: ContactsViewModel,
     searchAppBarState: SearchAppBarState,
     searchTextState: String,
 ) {
     when (searchAppBarState){
         SearchAppBarState.CLOSED -> {
-            DefaultNotesAppBar(
+            DefaultContactsAppBar(
                 onSearchClicked= {
                     Log.d("Args", "Clicked on The Search here")
-                    notesViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                    contactsViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                 },
                 onSortClicked= {
                    when (it) {
-                       Priority.HIGH -> {
-                           notesViewModel.getAllNotesPriorityHigh()
+                       Alphabet.AZ -> {
+                           contactsViewModel.getAllContactAtoZ()
                        }
-                       Priority.LOW -> {
-                           notesViewModel.getAllNotesPriorityLow()
+                       Alphabet.ZA -> {
+                           contactsViewModel.getAllContactZtoA()
                        }
 
-                       Priority.NONE -> {
-                           notesViewModel.getAllNotes()
+                       Alphabet.NONE -> {
+                           contactsViewModel.getAllContacts()
                        }
                        else -> {
 
@@ -74,7 +73,7 @@ fun NotesAppBar(
                    }
                 },
                 onDeleteAllClicked= {
-                    notesViewModel.action.value = Action.DELETE_ALL
+                    contactsViewModel.action.value = Action.DELETE_ALL
                 }
             )
         }
@@ -82,15 +81,15 @@ fun NotesAppBar(
             SearchAppBar(
                 text = searchTextState,
                 onTextChange = {text ->
-                    notesViewModel.searchTextState.value = text
-                    notesViewModel.searchDatabase(text)
+                    contactsViewModel.searchTextState.value = text
+                    contactsViewModel.searchDatabase(text)
                 },
                 onCloseClicked = {
-                    notesViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
-                    notesViewModel.searchTextState.value = ""
+                    contactsViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                    contactsViewModel.searchTextState.value = ""
                 },
                 onSearchClicked = {text ->
-                    notesViewModel.searchDatabase(searchQuery = text)
+                    contactsViewModel.searchDatabase(searchQuery = text)
                 },
             )
         }
@@ -101,18 +100,18 @@ fun NotesAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultNotesAppBar(
+fun DefaultContactsAppBar(
     onSearchClicked: () -> Unit,
-    onSortClicked: (Priority) -> Unit,
+    onSortClicked: (Alphabet) -> Unit,
     onDeleteAllClicked: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Purple40, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
         title = {
-            Text(text = stringResource(id = R.string.notes))
+            Text(text = stringResource(id = R.string.contacts))
         },
         actions = {
-            NotesAppBarActions(
+            ContactsAppBarActions(
                 onSearchClicked = onSearchClicked,
                 onSortClicked = onSortClicked,
                 onDeleteClicked = onDeleteAllClicked,
@@ -122,9 +121,9 @@ fun DefaultNotesAppBar(
 }
 
 @Composable
-fun NotesAppBarActions(
+fun ContactsAppBarActions(
     onSearchClicked: () -> Unit,
-    onSortClicked: (Priority) -> Unit,
+    onSortClicked: (Alphabet) -> Unit,
     onDeleteClicked: () -> Unit
 ) {
     SearchAction(onSearchClicked= onSearchClicked)
@@ -148,7 +147,7 @@ fun SearchAction(
 
 @Composable
 fun SortAction(
-    onSortClicked: (Priority) -> Unit
+    onSortClicked: (Alphabet) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -157,42 +156,42 @@ fun SortAction(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_filter_list),
-            contentDescription = stringResource(id = R.string.sort_notes),
+            contentDescription = stringResource(id = R.string.sort_contacts),
         )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
             },
-            modifier = Modifier.fillMaxWidth(fraction = 0.35f)
+            modifier = Modifier.fillMaxWidth(fraction = 0.27f)
         ) {
             DropdownMenuItem(
                 text = {
 //                    PriorityItem(priority = Priority.LOW)
-                    Text(text = "SORT: LOW-HIGH",)
+                       Text(text = "SORT: A-Z",)
                 },
                 onClick = {
                     expanded = false
-                    onSortClicked(Priority.LOW)
+                    onSortClicked(Alphabet.AZ)
                 }
             )
             DropdownMenuItem(
                 text = {
-//                    PriorityItem(priority = Priority.HIGH)
-                    Text(text = "SORT: HIGH-LOW",)
+//                    PriorityItem(priority = Priority.LOW)
+                    Text(text = "SORT: Z-A",)
                 },
                 onClick = {
                     expanded = false
-                    onSortClicked(Priority.HIGH)
+                    onSortClicked(Alphabet.ZA)
                 }
             )
             DropdownMenuItem(
                 text = {
-                    Text(text = "SORT: NONE",)
+                    Text(text = "SORT: NONE")
                 },
                 onClick = {
                     expanded = false
-                    onSortClicked(Priority.NONE)
+                    onSortClicked(Alphabet.NONE)
                 }
             )
         }
@@ -220,7 +219,7 @@ fun DeleteAllFunction(
         ) {
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.delete_all_notes))
+                    Text(text = stringResource(id = R.string.delete_all_contacts))
                 },
                 onClick = {
                     expanded = false

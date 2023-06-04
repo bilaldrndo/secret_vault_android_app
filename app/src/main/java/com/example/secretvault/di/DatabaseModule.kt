@@ -28,6 +28,16 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideNotesDao(database: RoomAppDatabase) = database.notesDao();
+    fun provideNotesDao(database: RoomAppDatabase) = database.notesDao()
+
+    @Singleton
+    @Provides
+    fun provideContactsDao(database: RoomAppDatabase) = database.contactsDao()
+
+    @Provides
+    @Singleton
+    fun provideDataStoreRepository(
+        @ApplicationContext context: Context
+    ) = DataStoreRepository(context = context)
 
 }
